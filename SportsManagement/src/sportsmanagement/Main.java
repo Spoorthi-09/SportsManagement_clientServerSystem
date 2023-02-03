@@ -31,7 +31,7 @@ public class Main{
 		Game game = teamCreationObj.mapJsontoClass(mapper);		
 		
 		do {
-			System.out.println("Enter option:\n 1. Write team list to Json\n 2. Save team list to database");
+			System.out.println("Enter option:\n 1. Write team list to Json\n 2. Save team list to database\n 3. Get Teams");
 			choice = sc.nextInt();
 			
 			switch(choice) {
@@ -39,9 +39,13 @@ public class Main{
 					break;
 			case 2: teamCreationObj.saveTeam(teamCreationObj.createTeams(game));
 					break;
+			case 3: System.out.println("Enter game ID");
+					int gameId = sc.nextInt();
+					teamCreationObj.getTeams(gameId);
+					break;
 			default : System.out.println("default");
 			}
-		}while(choice<3);
+		}while(choice<4);
 		
 	}
 	

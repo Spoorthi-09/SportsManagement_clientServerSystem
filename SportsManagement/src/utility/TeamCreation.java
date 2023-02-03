@@ -141,6 +141,35 @@ public void saveTeam(TeamList teamList) {
 		}
 		
 	}
+
+	@Override
+	public void getTeams(int gameId) {
+		String query = "SELECT sportsmanagement.team.name AS teamName\r\n"
+				+ "	,sportsmanagement.player.name AS playerName\r\n"
+				+ "	,sportsmanagement.game.gameType\r\n"
+				+ "FROM sportsmanagement.team_player\r\n"
+				+ "INNER JOIN sportsmanagement.team ON sportsmanagement.team_player.teamId = sportsmanagement.team.teamId\r\n"
+				+ "INNER JOIN sportsmanagement.player ON sportsmanagement.team_player.playerId = sportsmanagement.player.playerId\r\n"
+				+ "INNER JOIN sportsmanagement.game ON sportsmanagement.team.gameId = sportsmanagement.game.id\r\n"
+				+ "WHERE sportsmanagement.team.gameId = "+gameId;
+		
+		try {
+			PreparedStatement prepstmt = con.prepareStatement(query);
+			ResultSet resultSet = prepstmt.executeQuery(query);
+			System.out.println("TeamName\tPlayerName\tGameType");
+			
+			while(resultSet.next()) {
+				System.out.print(resultSet.getString(1));
+				System.out.print("\t"+resultSet.getString(2));
+				System.out.print("\t\t"+resultSet.getString(3));
+				System.out.println();
+			}
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		
+	}
 	
 	
 	

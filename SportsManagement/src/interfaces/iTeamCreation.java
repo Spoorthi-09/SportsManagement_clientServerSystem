@@ -20,5 +20,5 @@ public interface iTeamCreation {
 	public void insertTeamdb(TeamDto teamdto);
 	public void insertPlayerdb(PlayerDto playerdto);
 	public void insertTeamPlayerdb(TeamPlayerDto teamPlayerdto);
-//	public void getTeams()
+	public void getTeams(int gameId);
 }
