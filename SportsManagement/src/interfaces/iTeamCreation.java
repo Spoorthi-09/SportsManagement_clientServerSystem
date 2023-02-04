@@ -21,4 +21,5 @@ public interface iTeamCreation {
 	public void insertPlayerdb(PlayerDto playerdto);
 	public void insertTeamPlayerdb(TeamPlayerDto teamPlayerdto);
 	public void getTeams(int gameId);
+	public void serverConnect(ObjectMapper mapper) throws IOException, ClassNotFoundException;
 }

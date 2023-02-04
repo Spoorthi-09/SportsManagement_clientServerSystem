@@ -1,7 +1,11 @@
-package utility;
+package sportsmanagement;
 
 import java.io.File;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -167,11 +171,25 @@ public void saveTeam(TeamList teamList) {
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}
-		
-		
 	}
 	
-	
+	public void serverConnect(ObjectMapper mapper) throws IOException, ClassNotFoundException{
+        ServerSocket serverSocket = new ServerSocket(9000);
+        Socket socket = serverSocket.accept();
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+        
+        Object data = objectInputStream.readObject();
+//        System.out.println(data);
+
+        String json = mapper.writeValueAsString(data);
+        Game game = mapper.readValue(json,Game.class);
+        
+        writetoJson(mapper,game);
+        
+        objectInputStream.close();
+        socket.close();
+        serverSocket.close();
+    }
 	
 	
 }

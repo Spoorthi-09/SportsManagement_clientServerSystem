@@ -1,6 +1,5 @@
 package sportsmanagement;
-import java.io.File;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -8,20 +7,16 @@ import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dbconnection.DBConnection;
 import models.Game;
-import models.Team;
-import models.TeamList;
-import utility.TeamCreation;
 
 public class Main{
 
-	public static void main(String[] args) throws  IOException{
+	public static void main(String[] args) throws  IOException, ClassNotFoundException{
 		Main mainObj = new Main();
 		mainObj.start();
 	}
 	
-	public void start() throws StreamWriteException, DatabindException, IOException {
+	public void start() throws StreamWriteException, DatabindException, IOException, ClassNotFoundException {
 		
 		Scanner sc = new Scanner(System.in);
 		int choice;
@@ -31,7 +26,11 @@ public class Main{
 		Game game = teamCreationObj.mapJsontoClass(mapper);		
 		
 		do {
-			System.out.println("Enter option:\n 1. Write team list to Json\n 2. Save team list to database\n 3. Get Teams");
+			System.out.println("Enter option:\r\n"
+					+ " 1. Write team list to Json\r\n"
+					+ " 2. Save team list to database\r\n"
+					+ " 3. Get Teams\r\n"
+					+ " 4. Get input file from client and generate output file");
 			choice = sc.nextInt();
 			
 			switch(choice) {
@@ -43,12 +42,13 @@ public class Main{
 					int gameId = sc.nextInt();
 					teamCreationObj.getTeams(gameId);
 					break;
+			case 4: teamCreationObj.serverConnect(mapper);
+					break;
 			default : System.out.println("default");
 			}
-		}while(choice<4);
+		}while(choice<5);
+		
+		sc.close();
 		
 	}
-	
-	
-
 }
