@@ -14,12 +14,14 @@ import models.TeamList;
 
 public interface iTeamCreation {
 	public Game mapJsontoClass(ObjectMapper mapper) throws IOException;
-	public void writetoJson(ObjectMapper mapper, Game game) throws StreamWriteException, DatabindException, IOException;
+	public void writetoJson(ObjectMapper mapper, Game game, String outputFileLocation) throws StreamWriteException, DatabindException, IOException;
 	public TeamList createTeams(Game game);
+	
 	public void saveTeam(TeamList teamList);
 	public void insertTeamdb(TeamDto teamdto);
 	public void insertPlayerdb(PlayerDto playerdto);
 	public void insertTeamPlayerdb(TeamPlayerDto teamPlayerdto);
 	public void getTeams(int gameId);
+	
 	public void serverConnect(ObjectMapper mapper) throws IOException, ClassNotFoundException;
 }

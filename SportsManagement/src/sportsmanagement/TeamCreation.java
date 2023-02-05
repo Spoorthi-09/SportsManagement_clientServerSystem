@@ -1,14 +1,10 @@
 package sportsmanagement;
 
-import java.io.File;
+import java.io.*;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -37,8 +33,8 @@ public class TeamCreation implements iTeamCreation{
 	}
 	
 	@Override
-	public void writetoJson(ObjectMapper mapper, Game game) throws StreamWriteException, DatabindException, IOException {
-		mapper.writerWithDefaultPrettyPrinter().writeValue(new File("C:\\Users\\spoorthi.s.bhat\\Desktop\\Learn and code\\OutputJSON.json"), createTeams(game));
+	public void writetoJson(ObjectMapper mapper, Game game, String outputFileLocation) throws StreamWriteException, DatabindException, IOException {
+		mapper.writerWithDefaultPrettyPrinter().writeValue(new File(outputFileLocation), createTeams(game));
 	}
 	
 	@Override
@@ -68,7 +64,7 @@ public class TeamCreation implements iTeamCreation{
 	
 
 @Override
-public void saveTeam(TeamList teamList) {
+	public void saveTeam(TeamList teamList) {
 		for(Team team : teamList.teams) {
 			TeamDto teamdto = new TeamDto();
 			teamdto.id = team.id;
@@ -175,20 +171,31 @@ public void saveTeam(TeamList teamList) {
 	
 	public void serverConnect(ObjectMapper mapper) throws IOException, ClassNotFoundException{
         ServerSocket serverSocket = new ServerSocket(9000);
-        Socket socket = serverSocket.accept();
-        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+        Socket clientSocket = serverSocket.accept();
         
-        Object data = objectInputStream.readObject();
-//        System.out.println(data);
+        //read object from client
+        DataInputStream dataInputStream = new DataInputStream(clientSocket.getInputStream());
+        int objectLength = dataInputStream.readInt();
+        byte[] objectBytes = new byte[objectLength];
+        dataInputStream.readFully(objectBytes);
 
+        //deserialize object
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(objectBytes);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        Object data = objectInputStream.readObject();
+        
+        String outputFileLocation = dataInputStream.readUTF();
+        
         String json = mapper.writeValueAsString(data);
         Game game = mapper.readValue(json,Game.class);
         
-        writetoJson(mapper,game);
+        writetoJson(mapper,game,outputFileLocation);
         
         objectInputStream.close();
-        socket.close();
+        clientSocket.close();
         serverSocket.close();
+        
+
     }
 	
 	

@@ -34,7 +34,7 @@ public class Main{
 			choice = sc.nextInt();
 			
 			switch(choice) {
-			case 1: teamCreationObj.writetoJson(mapper, game);
+			case 1: teamCreationObj.writetoJson(mapper, game, "C:\\Users\\spoorthi.s.bhat\\Desktop\\Learn and code\\OutputJSON.json");
 					break;
 			case 2: teamCreationObj.saveTeam(teamCreationObj.createTeams(game));
 					break;
