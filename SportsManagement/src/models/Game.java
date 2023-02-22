@@ -7,6 +7,7 @@ public class Game {
 	public Game() {
 		super();
 	}
+
 	public int getGameType() {
 		return gameType;
 	}

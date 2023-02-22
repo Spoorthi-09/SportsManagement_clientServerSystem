@@ -4,6 +4,7 @@ import java.util.*;
 public class TeamList {
 	public List<Team> teams;
 	public int total;
+	public List<Player> additionalPlayers;
 	
 	public TeamList() {
 		super();
@@ -20,9 +21,22 @@ public class TeamList {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-	public TeamList(List<Team> teams, int total) {
+	
+	public List<Player> getAdditionalPlayers() {
+		return additionalPlayers;
+	}
+	public void setAdditionalPlayers(List<Player> additionalPlayers) {
+		this.additionalPlayers = additionalPlayers;
+	}
+	public TeamList(List<Team> teams, int total, List<Player> additionalPlayers) {
 		super();
 		this.teams = teams;
 		this.total = total;
+		this.additionalPlayers = additionalPlayers;
 	}
+//	public TeamList(List<Team> teams, int total) {
+//		super();
+//		this.teams = teams;
+//		this.total = total;
+//	}
 }
