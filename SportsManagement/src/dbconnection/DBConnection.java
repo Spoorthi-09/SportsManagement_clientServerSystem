@@ -2,18 +2,20 @@ package dbconnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import sportsmanagement.Config;
+
 public class DBConnection {
 	static Connection con;
 	public static Connection createDBConnection() {
 		
 		try {
 			//load driver
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			Class.forName(Config.getDriver());
 		
 			//get connection
-			String url="jdbc:mysql://localhost:3306/sportsmanagement";
-			String username="root";
-			String password="LnC@root09";
+			String url=Config.getDatabaseURL();
+			String username=Config.getDatabaseUsername();
+			String password=Config.getDatabasePassword();
 			con = DriverManager.getConnection(url,username,password);
 			
 //			if(con!=null) {

@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,15 +41,15 @@ public class ClientHandler implements Runnable {
                     if(choice == 1) {
                         outputFileLocation = dataInputStream.readUTF();
                     }               
-                    TeamCreation teamCreationObj = new TeamCreation();
+                    TeamPersistence teamPersistence = new TeamPersistence();
                     switch (choice) {               
                         case 1: 
                             System.out.println("Inside switch "+choice);
-                            createTeamsOperations(inputJsonObject,teamCreationObj,outputFileLocation,dataOutputStream);
+                            createTeamsOperations(inputJsonObject,teamPersistence,outputFileLocation,dataOutputStream);
                             break;
                         case 2:
                             System.out.println("Inside switch "+choice);
-                            getTeamsOperations(gameId,teamCreationObj,dataOutputStream);
+                            getTeamsOperations(gameId,teamPersistence,dataOutputStream);
                             break;
                         default:
                             System.out.println("Invalid choice");
@@ -80,28 +79,30 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private static void createTeamsOperations(Object inputJsonObject,TeamCreation teamCreationObj,String outputFileLocation,DataOutputStream dataOutputStream) throws IOException {
+    private static void createTeamsOperations(Object inputJsonObject,TeamPersistence teamPersistence,String outputFileLocation,DataOutputStream dataOutputStream) throws IOException {
     	ObjectMapper mapper = new ObjectMapper();
+        JsonOperations jsonOperations = new JsonOperations();
+        TeamCreator teamCreator = new TeamCreator();
         String jsonDataString = mapper.writeValueAsString(inputJsonObject);
         Game game = mapper.readValue(jsonDataString, Game.class);
-        
-    	String message = teamCreationObj.checkInputGame(game);
+
+    	String message = teamPersistence.checkInputGame(game);
     	if(message.contains("Success")) {
-    		teamCreationObj.writeOutputtoJson(mapper, game, outputFileLocation); 
-    		teamCreationObj.saveTeam(teamCreationObj.createTeams(game));
+    		jsonOperations.writeOutputtoJson(mapper, game, outputFileLocation); 
+    		teamPersistence.saveTeam(teamCreator.createTeams(game));
+    	}else {
+    		System.out.println("can't invoke");
     	}
     	
     	dataOutputStream.writeUTF(message);
     	dataOutputStream.flush();
     }
     
-    private static void getTeamsOperations(int gameId, TeamCreation teamCreationObj,DataOutputStream dataOutputStream) throws IOException {
-	        String clientMessage = teamCreationObj.getTeams(gameId);
+    private static void getTeamsOperations(int gameId, TeamPersistence teamPersistence,DataOutputStream dataOutputStream) throws IOException {
+	        String clientMessage = teamPersistence.getTeams(gameId);
 	        dataOutputStream.writeUTF(clientMessage);
 	      	dataOutputStream.flush();
 	          
     }
  }
-
-
 

@@ -6,21 +6,9 @@ import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dto.PlayerDto;
-import dto.TeamDto;
-import dto.TeamPlayerDto;
 import models.Game;
-import models.TeamList;
 
-public interface iTeamCreation {
+public interface iJsonOperations {
 	public Game mapJsontoClass(ObjectMapper mapper) throws IOException;
 	public void writeOutputtoJson(ObjectMapper mapper, Game game, String outputFileLocation) throws StreamWriteException, DatabindException, IOException;
-	public TeamList createTeams(Game game);
-	
-	public void saveTeam(TeamList teamList);
-	public void insertTeamdb(TeamDto teamdto);
-	public void insertPlayerdb(PlayerDto playerdto);
-	public void insertTeamPlayerdb(TeamPlayerDto teamPlayerdto);
-	public String getTeams(int gameId);
-	
 }
